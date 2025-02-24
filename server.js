@@ -5,6 +5,7 @@
     - Edit a user
     - Delete a user
 */
+import cors from 'cors'
 import express from 'express'
 import {PrismaClient} from '@prisma/client'
 
@@ -12,8 +13,7 @@ const prisma = new PrismaClient()
 
 const app = express()
 app.use(express.json())
-
-const users = []
+app.use(cors())
 
 app.post('/users', async (req, res) => {
     await prisma.user.create({
@@ -25,7 +25,7 @@ app.post('/users', async (req, res) => {
     })
 })
 app.get('/users', async (req, res) => {
-    const users = []
+    let users = []
     if(req.query) {
         users = await prisma.user.findMany({
             where: {
